@@ -24,25 +24,40 @@ namespace GeoNames_Andy
         static void Main()
         {
             //HostFactory.Run(new Bootstrapper());
-            IEnumerable<country> liste = new List<country>();
+            string file = "C:\\Users\\hua\\Desktop\\Andy 02.2021\\allCountries.txt";
+            List<country> allCountries = ImportFile(file);
+            Insert(allCountries);
+        }
 
+        public static List<country> ImportFile(string file)
+        {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture) //allgemeine Regelung
             {
-                Delimiter = "\t"
+                Delimiter = "\t", //Tab als Trennung
+                HasHeaderRecord = false, //Enthält keinen Header
+                Encoding = Encoding.UTF8,
+                TrimOptions = TrimOptions.InsideQuotes, //Trennt Leerzeichen innerhalb von ""
+                Quote = '"', //Quotes sind "
+                Mode = CsvMode.Escape,
+                MissingFieldFound = null, //Wenn gefunden, soll keine Exception kommen
+                HeaderValidated = null
             };
 
-            using (var reader = new StreamReader("C:\\Users\\hua\\Desktop\\Andy 02.2021\\allCountries.txt"))
-            using (var csv = new CsvReader(reader, config))
+            using (var streamReader = new StreamReader(file))
+            using (var reader = new CsvReader(streamReader, config))
             {
-                liste = csv.GetRecords<country>();
+                var csvContext = new CsvContext(reader);
+
+                csvContext.RegisterClassMap<countryCsvMap>();
+
+                return reader.GetRecords<country>().ToList();
             }
-            Insert(DummyData());
         }
 
         public static void Insert(IEnumerable<country> countries)
         {
             //Dapper
-            var sql = @"INSERT INTO Andy.Places (IsoCode, PostalCode, PlaceName, AdminName1, AdminCode1, AdminName2, AdminCode2, AdminName3, AdminCode3, Latitude, Longitude, Accuracy)
+            var sql = @"INSERT INTO Andy.Places0 (IsoCode, PostalCode, PlaceName, AdminName1, AdminCode1, AdminName2, AdminCode2, AdminName3, AdminCode3, Latitude, Longitude, Accuracy)
                         VALUES(@IsoCode, @PostalCode, @PlaceName, @AdminName1, @AdminCode1, @AdminName2, @AdminCode2, @AdminName3, @AdminCode3, @Latitude, @Longitude, @Accuracy)";
 
             using (var connection = new SqlConnection(Helper.CnnString("Andy.PlacesDB")))

@@ -32,7 +32,7 @@ namespace GeoNames_Andy
         public string AdminCode3 { get; set; }
         public float Latitude { get; set; }
         public float Longitude { get; set; }
-        public int Accuracy { get; set; }
+        public int ? Accuracy { get; set; } //Ist nullable
 
 
 

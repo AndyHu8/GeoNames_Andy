@@ -110,8 +110,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bootstrapper.cs" />
-    <Compile Include="country.cs" />
+    <Compile Include="ImportAdvanced\countryAdCsvMap.cs" />
+    <Compile Include="ImportAdvanced\countryAd.cs" />
+    <Compile Include="ImportAdvanced\BootstrapperAd.cs" />
+    <Compile Include="ImportSimple\Bootstrapper.cs" />
+    <Compile Include="ImportSimple\country.cs" />
+    <Compile Include="ImportSimple\countryCsvMap.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="LocalSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -120,5 +124,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
